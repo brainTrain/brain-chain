@@ -1,0 +1,26 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Build directories
+dev
+prod
+audio
+index.html
+*.rdb
+
+# Dependency directories
+node_modules
+jspm_packages
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# temp editor files
+*.swp
+*.swo
+*.DS_Store
