@@ -12,9 +12,8 @@ function getPreviousBlock () {
 
 function addBlock (data) {
   const { index: previousIndex, hash: previousHash } = getPreviousBlock();
-  const block = generateBlock(previousIndex + 1, previoushash, data);
 
-  blockChain.push(block);
+  blockChain.push(generateBlock(previousIndex + 1, previoushash, data));
 }
 
 function mineBlocks () {
