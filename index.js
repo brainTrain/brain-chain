@@ -14,8 +14,11 @@ function addBlock (data) {
 const blockChain = [generateBlock(0, 'trololol', { randz: 0 })];
 
 console.log(blockChain);
+mineBlocks();
 
-setInterval(function () { 
-  addBlock({ randz: Math.random() });
-  console.log(blockChain);
-}, 500)
+function mineBlocks () {
+  setInterval(function () { 
+    addBlock({ randz: Math.random() });
+    console.log(blockChain);
+  }, 1000)
+}
