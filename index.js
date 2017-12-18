@@ -13,7 +13,7 @@ function getPreviousBlock () {
 function addBlock (data) {
   const { index: previousIndex, hash: previousHash } = getPreviousBlock();
 
-  blockChain.push(generateBlock(previousIndex + 1, previoushash, data));
+  blockChain.push(generateBlock(previousIndex + 1, previousHash, data));
 }
 
 function mineBlocks () {
