@@ -3,7 +3,7 @@ var crypto = require('crypto');
 function generateHash (index, datetime, previousHash, data) {
   return crypto
     .createHash('sha256')
-    .update(index + datetime + previousHash + JSON.stringify(data))
+    .update(`${index}${datetime}${previousHash}${JSON.stringify(data)}`)
     .digest('hex');
 }
 
