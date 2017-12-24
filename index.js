@@ -1,5 +1,5 @@
 var { generateBlock, mineBlock } = require('./block');
-const DIFFICULTY = 2;
+const DIFFICULTY = 10;
 
 // generate chain and prime it with first block
 const blockChain = [generateBlock(0, 'trololol', { randz: 0 }, 'lolololol', 0)];
