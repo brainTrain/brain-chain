@@ -20,20 +20,15 @@ function generateBlock (index, previousHash, data, hash, nonce) {
 function mineBlock (difficulty, index, previousHash, data, callback) {
   let nonce = 0;
   let hash = generateHash(index, previousHash, data, nonce)
-  const difficultyMatchString = Array(difficulty + 1).join('0');
 
   // if the hash doesn't meet the constraint of number of leading zeros, keep looping
-  while (hash.substring(0, difficulty) !== difficultyMatchString) {
-    // if new hash has the required number of leading zeros, break the loop
-    // otherwise increment the nonce and generate a new hash for testing
-    if (hash.substring(0, difficulty) === difficultyMatchString) {
-      break;
-    } else {
-      nonce ++;
-      hash = generateHash(index, previousHash, data, nonce)
-    }
+  while (hash.substring(0, difficulty) !== Array(difficulty + 1).join('0')) {
+    nonce ++;
+    hash = generateHash(index, previousHash, data, nonce);
   }
 
+  console.log(nonce)
+  console.log(hash)
   const block = generateBlock(index, previousHash, data, hash, nonce);
   callback(block);
 }
