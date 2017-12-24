@@ -1,24 +1,30 @@
-var { generateHash, generateBlock } = require('./block');
+var { generateBlock, mineBlock } = require('./block');
+const DIFFICULTY = 2;
 
 // generate chain and prime it with first block
-const blockChain = [generateBlock(0, 'trololol', { randz: 0 })];
+const blockChain = [generateBlock(0, 'trololol', { randz: 0 }, 'lolololol', 0)];
 console.log(blockChain);
 // start fake block mining
 mineBlocks();
+
+function nextIndex () {
+  const { index } = getPreviousBlock();
+  return index + 1;
+}
 
 function getPreviousBlock () {
   return blockChain[blockChain.length - 1];
 }
 
-function addBlock (data) {
-  const { index: previousIndex, hash: previousHash } = getPreviousBlock();
-
-  blockChain.push(generateBlock(previousIndex + 1, previousHash, data));
+function addBlock (block) {
+  blockChain.push(block);
+  console.log(blockChain);
 }
 
 function mineBlocks () {
   setInterval(function () { 
-    addBlock({ randz: Math.random() });
-    console.log(blockChain);
+    const { hash: previousHash } = getPreviousBlock();
+    const data = { randz: Math.random() };
+    mineBlock(DIFFICULTY, nextIndex(), previousHash, data, addBlock)
   }, 1000)
 }
