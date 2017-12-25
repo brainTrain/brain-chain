@@ -27,8 +27,6 @@ function mineBlock (difficulty, index, previousHash, data, callback) {
     hash = generateHash(index, previousHash, data, nonce);
   }
 
-  console.log(nonce)
-  console.log(hash)
   const block = generateBlock(index, previousHash, data, hash, nonce);
   callback(block);
 }
