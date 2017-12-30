@@ -23,8 +23,8 @@ function mineBlock (difficulty, index, previousHash, data, callback) {
 
   // if the hash doesn't meet the constraint of number of leading zeros, keep looping
   while (hash.substring(0, difficulty) !== Array(difficulty + 1).join('0')) {
-    nonce ++;
     hash = generateHash(index, previousHash, data, nonce);
+    nonce ++;
   }
 
   const block = generateBlock(index, previousHash, data, hash, nonce);
