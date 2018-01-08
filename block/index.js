@@ -17,14 +17,18 @@ function generateBlock (index, previousHash, data, hash, nonce) {
   };
 }
 
+function getIsValidHash (hash, difficulty) {
+  return hash.substring(0, difficulty) === Array(difficulty + 1).join('0');
+}
+
 function mineBlock (difficulty, index, previousHash, data, callback) {
   let nonce = 0;
   let hash = generateHash(index, previousHash, data, nonce)
 
   // if the hash doesn't meet the constraint of number of leading zeros, keep looping
-  while (hash.substring(0, difficulty) !== Array(difficulty + 1).join('0')) {
-    hash = generateHash(index, previousHash, data, nonce);
+  while (!getIsValidHash(hash, difficulty)) {
     nonce ++;
+    hash = generateHash(index, previousHash, data, nonce);
   }
 
   const block = generateBlock(index, previousHash, data, hash, nonce);
@@ -32,7 +36,7 @@ function mineBlock (difficulty, index, previousHash, data, callback) {
 }
 
 module.exports = {
-  generateHash,
-  generateBlock,
   mineBlock,
+  generateHash,
+  getIsValidHash,
 };

@@ -1,10 +1,18 @@
-var { generateBlock, mineBlock } = require('./block');
-const DIFFICULTY = 3;
+var { mineBlock, generateHash, getIsValidHash } = require('./block');
+const DIFFICULTY = 5;
+const DIFFICULTY_STRING = Array(DIFFICULTY + 1).join('0');
 
 // generate chain and prime it with first block
-const blockChain = [generateBlock(0, 'trololol', { randz: 0 }, 'lolololol', 0)];
-console.log(blockChain);
-// start fake block mining
+const genisisBlock = {
+  index: 0,
+  previousHash: `${DIFFICULTY_STRING}trololol`,
+  data: {randz: 0},
+  hash: `${DIFFICULTY_STRING}lolololol`,
+  nonce: 0,
+};
+const blockChain = [genisisBlock];
+
+// start fakin mining
 mineBlocks();
 
 function nextIndex () {
@@ -13,18 +21,44 @@ function nextIndex () {
 }
 
 function getPreviousBlock () {
-  return blockChain[blockChain.length - 1];
+  return blockChain[blockChain.length - 1] || {};
+}
+
+function getHasPreviousHash (previousIndex, previousHash) {
+  const { hash } = blockChain[previousIndex] || {};
+  return hash === previousHash;
+}
+
+function getIsValidData ({ hash, index, previousHash, data, nonce }) {
+  const testHash = generateHash(index, previousHash, data, nonce, true);
+  return testHash === hash;
+}
+
+function getIsValidBlock (block) {
+  const isValidHash = getIsValidHash(block.hash, DIFFICULTY);
+  const hasPreviousHash = getHasPreviousHash(block.index - 1, block.previousHash);
+  const isValidData = getIsValidData(block);
+
+  return isValidHash && hasPreviousHash && isValidData;
 }
 
 function addBlock (block) {
-  blockChain.push(block);
+  // only save if hash is valid
+  if (getIsValidBlock(block)) {
+    blockChain.push({
+      ...block,
+      datetime_saved: Date.now(),
+    });
+  } else {
+    console.error('this hash wasn\'t valid', block.hash);
+  }
   console.log(blockChain);
+  // kick off new mining operation once we add a new block
+  mineBlocks();
 }
 
 function mineBlocks () {
-  setInterval(function () { 
-    const { hash: previousHash } = getPreviousBlock();
-    const data = { randz: Math.random() };
-    mineBlock(DIFFICULTY, nextIndex(), previousHash, data, addBlock)
-  }, 1000)
+  const { hash: previousHash } = getPreviousBlock();
+  const data = { randz: Math.random() };
+  mineBlock(DIFFICULTY, nextIndex(), previousHash, data, addBlock)
 }
